@@ -70,8 +70,8 @@ def main():
     'If it is in the word but in the wrong place, it will be ' + colored('yellow', 'yellow') + '.\n' +
     'If it is not in the word, it will be ' + colored('red', 'red') + '.\n')
     while True:
-        #answer = random.choice(word_bank) # Picks a word for this turn
-        answer = 'OSMII' #used for debug with double
+        answer = random.choice(word_bank) # Picks a word for this turn
+        #answer = 'OSMII' #used for debug with double
         if guess(answer):
             print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
         else:
