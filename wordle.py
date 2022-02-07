@@ -6,7 +6,7 @@ ALLOWED_ATTEMPTS = 6
 WORD_LENGTH = 5
 
 
-f = open(r'C:\Users\Luca\Desktop\PAROLE.txt')
+f = open(r'PAROLE.txt')
 parole = f.read()
 f.close
 
