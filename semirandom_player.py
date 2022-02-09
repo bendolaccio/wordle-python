@@ -1,4 +1,3 @@
-from multiprocessing.connection import wait
 from base import Player
 import random
 import time
@@ -10,7 +9,7 @@ class RandomPlayer(Player):
         self.word_bank = word_bank
     
     def choose(self, alphabet, word_bank, i):
-        attempt = random.choice(word_bank)
+        attempt = random.choice(self.word_bank)
         print(f"Attempt #{i+1}: {attempt}")
         time.sleep(3)
         return attempt

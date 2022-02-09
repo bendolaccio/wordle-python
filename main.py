@@ -2,7 +2,14 @@ from random_player import RandomPlayer
 from wordle import gameHandler
 from human_player import HumanPlayer
 from random_player import RandomPlayer
+from settings import FILENAME
 
 #test
-gh = gameHandler('PAROLE.txt', RandomPlayer("Luca"))
-gh.game()
+fileName = FILENAME
+f = open(fileName)
+parole = f.read()
+f.close
+word_bank = [x.upper() for x in parole.split()]
+
+gh = gameHandler(word_bank, RandomPlayer("Luca", word_bank))
+gh.play()

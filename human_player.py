@@ -3,8 +3,9 @@ from settings import WORD_LENGTH
 from base import Player
 
 class HumanPlayer(Player):
-    def __init__(self, name):
+    def __init__(self, name, word_bank):
         self.name = name
+        self.word_bank = word_bank
     
     def choose(self, alphabet, word_bank, i):
         """Ask the user to choose the word"""

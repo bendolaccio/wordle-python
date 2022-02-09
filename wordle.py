@@ -5,13 +5,9 @@ from human_player import HumanPlayer
 from settings import ALLOWED_ATTEMPTS, WORD_LENGTH
 
 class gameHandler(object):
-    def __init__(self, fileName, player):
-        self.fileName = fileName
+    def __init__(self, word_bank, player):
         self.player = player
-        f = open(self.fileName)
-        self.parole = f.read()
-        f.close
-        self.word_bank = [x.upper() for x in self.parole.split()]
+        self.word_bank = word_bank
 
     def validate(self, attempt, answer, current_alpha):
         result = list(attempt) #only need a list of character with the length of the word in this run (in this case 5)
@@ -64,7 +60,7 @@ class gameHandler(object):
                 print(f"\n{''.join(guess_result)}\n")
         return False
         
-    def game(self):
+    def play(self):
         print('\n\n\nI am thinking of a ' + str(WORD_LENGTH) + '-letter word. Can you guess in ' + str(ALLOWED_ATTEMPTS) + ' tries? \n')
         print('If a letter is in the right place, it will be ' + colored('green', 'green') + '.\n' +
         'If it is in the word but in the wrong place, it will be ' + colored('yellow', 'yellow') + '.\n' +
