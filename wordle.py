@@ -1,7 +1,7 @@
 import random
 import re
 from termcolor import colored
-from players.human_player import HumanPlayer
+from human_player import HumanPlayer
 from settings import ALLOWED_ATTEMPTS, WORD_LENGTH
 
 class gameHandler(object):
@@ -47,12 +47,12 @@ class gameHandler(object):
             current_alpha = current_alpha.replace(char, (colored(char, color)))  
         return current_alpha, result
 
-    def guess(self, answer):
+    def guess(self, answer, alphabet):
         for i in range(ALLOWED_ATTEMPTS):
             while True:
                 print(alphabet)
                 #attempt = input('Attempt #' + str(i + 1) + ': ').upper()
-                attempt = self.player.choose(alphabet, i)
+                attempt = self.player.choose(alphabet, self.word_bank, i)
                 if len(attempt) == WORD_LENGTH and attempt in self.word_bank: # Ensures user input is valid
                     break
                 else:
@@ -76,7 +76,7 @@ class gameHandler(object):
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
             #answer = 'OSMII' #used for debug with double
-            if self.guess(answer):
+            if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
             else:
                 print('\nYou lost! The word was ' + colored(answer, 'green') + '\n')
