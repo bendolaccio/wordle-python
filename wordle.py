@@ -83,7 +83,3 @@ class gameHandler(object):
             if input('\nWant to play again with a new word? Type anything to keep playing, or type [q]uit to quit. ').upper().startswith('Q'):
                 print('\nThanks for playing.\n')
                 exit()
-
-#test
-gh = gameHandler('PAROLE.txt', HumanPlayer("Luca"))
-gh.game()
