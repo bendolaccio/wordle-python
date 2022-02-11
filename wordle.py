@@ -1,14 +1,21 @@
 import random
 import re
 from termcolor import colored
-from human_player import HumanPlayer
 from settings import ALLOWED_ATTEMPTS, WORD_LENGTH
 
 class gameHandler(object):
     def __init__(self, word_bank, player):
         self.player = player
         self.word_bank = word_bank
+        self.letter_not_in_word = {}
 
+    def populateLetterNotInWord(self, char, pos, color):
+        if color == 'red':
+            self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+        if color == 'yellow':
+            self.letter_not_in_word[f'{char}']= []
+            self.letter_not_in_word[f'{char}'].append(pos)
+            self.letter_not_in_word[f'{char}'].sort()
     #input:
     # - answer
     # - attempt
@@ -19,7 +26,7 @@ class gameHandler(object):
     def validate(self, attempt, answer, current_alpha):
         # result will be a dictionary with:
         # - string with the attempt
-        # - WORD_LENGTH other entries: [pos:color]
+        # - len(WORD_LENGTH) other entries: [pos:color]
         result = {
             "attempt_result" : attempt
         }
@@ -52,10 +59,13 @@ class gameHandler(object):
                 color = 'yellow'
                 answer = answer.replace(char, '0', 1)
                 answer_s = list(answer)
+                self.populateLetterNotInWord(char, pos, 'yellow')
+                
             else: # Letter is incorrect
                 #result[pos]= char
                 result[str(pos)] = 'red'
                 color = 'red'
+                self.populateLetterNotInWord(char, pos, 'red')
             current_alpha = current_alpha.replace(char, (colored(char, color)))  
         return current_alpha, result
     
@@ -81,7 +91,7 @@ class gameHandler(object):
             while True:
                 print(alphabet)
                 #attempt = input('Attempt #' + str(i + 1) + ': ').upper()
-                attempt = self.player.choose(alphabet, self.word_bank, i)
+                attempt = self.player.choose(i, self.letter_not_in_word)
                 if len(attempt) == WORD_LENGTH and attempt in self.word_bank: # Ensures user input is valid
                     break
                 else:
@@ -90,6 +100,8 @@ class gameHandler(object):
                 return True
             else:
                 alphabet, guess_result = self.validate(attempt, answer, alphabet)
+                #very important: update the knowledge of the player
+                self.player.update_knowledge(guess_result)
                 #print(f"\n{''.join(guess_result)}\n")
                 self.printResult(guess_result)
         return False

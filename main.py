@@ -11,5 +11,5 @@ parole = f.read()
 f.close
 word_bank = [x.upper() for x in parole.split()]
 
-gh = gameHandler(word_bank, RandomPlayer("Luca", word_bank))
+gh = gameHandler(word_bank, HumanPlayer("Luca", word_bank))
 gh.play()
