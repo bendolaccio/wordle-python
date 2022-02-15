@@ -7,12 +7,14 @@ class SemiRandomPlayer(Player):
     def __init__(self, name, word_bank):
         self.name = name
         self.word_bank = word_bank
-        self.knowledge = {} #dictionary with the same format of the result plus the record 'letter not in word'
-        self.letter_not_in_word = {[]} # format: list of    'letter': 'A'
-                                       #                    'position': [1, 2, 3]
-    
+        self.letter_in_word = {}        # format: 'A' : [1,3,5]
+        self.letter_not_in_word = {}    # format: 'A' : [1,3,5]
+                                        #         'B' : [1,3,4,5]
+
     def choose(self, i, letter_not_in_word):
-        self.word_bank = self.reduceWordBank(self.word_bank, letter_not_in_word)
+        print(f'Length of word_bank = {len(self.word_bank)}')
+        self.word_bank = self.reduceWordBank(self.word_bank, self.letter_not_in_word)
+        print(f'Length of word_bank reduced = {len(self.word_bank)}')
         attempt = random.choice(self.word_bank)
         print(f"Attempt #{i+1}: {attempt}")
         time.sleep(3)
@@ -21,12 +23,24 @@ class SemiRandomPlayer(Player):
     def __str__(self):
         return self.name
     
+    def checkLettersNotInWord(self, word_bank, letter_not_in_word):
+        newWordBank = word_bank
+        if len(letter_not_in_word.keys())!=0:
+            result = []
+            for letter in letter_not_in_word.keys():
+                positions = letter_not_in_word[letter]
+                for pos in positions:
+                    result.extend([word for word in word_bank if word[pos: pos+1] == letter]) #find all the words that contains that letter in that position
+            newWordBank = [word for word in word_bank if word not in result] #create a new list with all the words of word_bank without words in res
+        return newWordBank
+    
     #this function iterate on each letter of the knowledge so far and select 
     # all the words that match with the letter considered
     # For example: knowledge = 'A _ _ I O' 
     def reduceWordBank(self, word_bank, letter_not_in_word):
-        reduced_word_bank = []
-        for word in word_bank:
-            for pos, char in word: #check the green ones first (with an eye on letters not in word)
-                continue
+        reduced_word_bank = self.checkLettersNotInWord(word_bank, letter_not_in_word)
+
         return reduced_word_bank
+    
+    def update_knowledge(self, letter_not_in_word):
+        self.letter_not_in_word = letter_not_in_word

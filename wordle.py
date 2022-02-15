@@ -16,6 +16,13 @@ class gameHandler(object):
             self.letter_not_in_word[f'{char}']= []
             self.letter_not_in_word[f'{char}'].append(pos)
             self.letter_not_in_word[f'{char}'].sort()
+        '''
+        if color == 'green':
+            if f'{char}' in self.letter_not_in_word:
+                del self.letter_not_in_word[f'{char}']
+        '''
+        # section commented because a green letter does not exclude the presence of another same green letter
+        # the knowledge about that letter 'not in' a place must not be deleted
     #input:
     # - answer
     # - attempt
@@ -101,7 +108,7 @@ class gameHandler(object):
             else:
                 alphabet, guess_result = self.validate(attempt, answer, alphabet)
                 #very important: update the knowledge of the player
-                self.player.update_knowledge(guess_result)
+                self.player.update_knowledge(self.letter_not_in_word)
                 #print(f"\n{''.join(guess_result)}\n")
                 self.printResult(guess_result)
         return False
