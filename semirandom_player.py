@@ -15,6 +15,9 @@ class SemiRandomPlayer(Player):
         print(f'Length of word_bank = {len(self.word_bank)}')
         self.word_bank = self.reduceWordBank(self.word_bank, self.letter_not_in_word)
         print(f'Length of word_bank reduced = {len(self.word_bank)}')
+        if len(self.word_bank) == 0:
+            print('ERROR')
+            quit
         attempt = random.choice(self.word_bank)
         print(f"Attempt #{i+1}: {attempt}")
         time.sleep(3)
@@ -30,7 +33,8 @@ class SemiRandomPlayer(Player):
             for letter in letter_not_in_word.keys():
                 positions = letter_not_in_word[letter]
                 for pos in positions:
-                    result.extend([word for word in word_bank if word[pos: pos+1] == letter]) #find all the words that contains that letter in that position
+                    temp = [word for word in word_bank if word[pos] == letter] #find all the words that contains that letter in that position
+                    result.extend([word for word in temp if word not in result]) # copy in result without duplicates
             newWordBank = [word for word in word_bank if word not in result] #create a new list with all the words of word_bank without words in res
         return newWordBank
     

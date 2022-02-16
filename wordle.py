@@ -9,11 +9,14 @@ class gameHandler(object):
         self.word_bank = word_bank
         self.letter_not_in_word = {}
 
+# bug: la parola era LUCIE, tentativo UVULE. Ha messo la U rossa (la seconda) e quindi la U non presente in tutte e 4 le posizioni
     def populateLetterNotInWord(self, char, pos, color):
         if color == 'red':
-            self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+            if f'{char}' not in self.letter_not_in_word:
+                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
         if color == 'yellow':
-            self.letter_not_in_word[f'{char}']= []
+            if f'{char}' not in self.letter_not_in_word:
+                self.letter_not_in_word[f'{char}']= []
             self.letter_not_in_word[f'{char}'].append(pos)
             self.letter_not_in_word[f'{char}'].sort()
         '''
