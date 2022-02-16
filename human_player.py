@@ -4,9 +4,10 @@ from base import Player
 
 class HumanPlayer(Player):
     def __init__(self, name, word_bank):
-        self.name = name
-        self.word_bank = word_bank
-        self.knowledge = {}
+        self.name               = name
+        self.word_bank          = word_bank
+        self.letter_not_in_word = {}
+        self.letter_in_word     = {}
     
     def choose(self, i, letter_not_in_word):
         """Ask the user to choose the word"""
@@ -18,8 +19,10 @@ class HumanPlayer(Player):
                 print(colored('\nNot in word bank.', 'red'))
         return attempt
     
-    def update_knowledge(self, result):
-        self.knowledge = result
+    def update_knowledge(self, letter_not_in_word, letter_in_word):
+        self.letter_not_in_word = letter_not_in_word
+        self.letter_in_word = letter_in_word
+
 
     def __str__(self):
         return self.name
