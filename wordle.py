@@ -9,7 +9,6 @@ class gameHandler(object):
         self.word_bank = word_bank
         self.letter_not_in_word = {}
 
-# bug: la parola era LUCIE, tentativo UVULE. Ha messo la U rossa (la seconda) e quindi la U non presente in tutte e 4 le posizioni
     def populateLetterNotInWord(self, char, pos, color):
         if color == 'red':
             if f'{char}' not in self.letter_not_in_word:
@@ -19,12 +18,12 @@ class gameHandler(object):
                 self.letter_not_in_word[f'{char}']= []
             self.letter_not_in_word[f'{char}'].append(pos)
             self.letter_not_in_word[f'{char}'].sort()
-        '''
+        
         if color == 'green':
-            if f'{char}' in self.letter_not_in_word:
-                del self.letter_not_in_word[f'{char}']
-        '''
-        # section commented because a green letter does not exclude the presence of another same green letter
+            if f'{char}' not in self.letter_not_in_word:
+                self.letter_not_in_word[f'{char}']= [] #create record in order to avoid the rewriting due to the red case
+        
+        # a green letter does not exclude the presence of another same green letter
         # the knowledge about that letter 'not in' a place must not be deleted
     #input:
     # - answer
@@ -56,6 +55,8 @@ class gameHandler(object):
                 #replace char with 0 in attempt
                 attempt_s[pos] = '0'
                 attempt = "".join(attempt_s)
+
+                self.populateLetterNotInWord(char, pos, 'green')
 
                 current_alpha = current_alpha.replace(char, (colored(char, color))) 
         #then check for the yellow letters: correct letters, but in wrong positions
