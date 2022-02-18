@@ -13,12 +13,11 @@ class gameHandler(object):
     def populateLetterNotInWord(self, char, pos, color):
         # bug sul rosso: se ha trovato una verde prima non segna non in parola sulle altre posizioni
         if color == 'red':
-            if f'{char}' not in self.letter_not_in_word:
-                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-            else:
-                #fixed
-                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-                self.letter_not_in_word[f'{char}'].remove(pos)
+            self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+            #fixed
+            if f'{char}' in self.letter_in_word:
+                for pos in self.letter_in_word[f'{char}']:
+                    self.letter_not_in_word[f'{char}'].remove(pos)
         if color == 'yellow':
             if f'{char}' not in self.letter_not_in_word:
                 self.letter_not_in_word[f'{char}']= []
@@ -26,8 +25,6 @@ class gameHandler(object):
             self.letter_not_in_word[f'{char}'].sort()
         
         if color == 'green':
-            if f'{char}' not in self.letter_not_in_word:
-                self.letter_not_in_word[f'{char}']= [] #create record in order to avoid the rewriting due to the red case
             #now we should add the fact that EVERY OTHER letter is not in that position
             for i in range(65, 91):
                 if f'{chr(i)}' != char:
