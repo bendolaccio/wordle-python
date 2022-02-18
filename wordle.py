@@ -41,7 +41,8 @@ class gameHandler(object):
     def populateLetterInWord(self, char, pos):
         if f'{char}' not in self.letter_in_word:
             self.letter_in_word[f'{char}'] = []
-        self.letter_in_word[f'{char}'].append(pos)
+        if pos not in self.letter_in_word[f'{char}']:    
+            self.letter_in_word[f'{char}'].append(pos)
         self.letter_in_word[f'{char}'].sort()
 
     #input:
@@ -65,27 +66,26 @@ class gameHandler(object):
         for pos, char in enumerate(attempt):
             if char == answer_s[pos]: # Letter is correct and in right position
                 #replace char with 0 in answer
-                #result[pos] = colored(char, 'green')
+                
                 result[str(pos)] = 'green'
                 color = 'green'
                 answer_s[pos]= '0'
                 answer = "".join(answer_s)
 
-                #replace char with 0 in attempt
+                #replace char with 0 in attempt so this character will not be checked again in the yellow/red cycle
                 attempt_s[pos] = '0'
                 attempt = "".join(attempt_s)
 
+                current_alpha = current_alpha.replace(char, (colored(char, color))) 
+
                 self.populateLetterInWord(char, pos)
                 self.populateLetterNotInWord(char, pos, 'green')
-                
-                current_alpha = current_alpha.replace(char, (colored(char, color))) 
         #then check for the yellow letters: correct letters, but in wrong positions
         #it must be done in two separate cycles otherwise some yellow can be displayed instead of some green
         for pos, char in enumerate(attempt):
             if char == '0': #green already checked and replaced
                 continue
             elif char in answer_s: # Letter is correct but in wrong position
-                #result[pos] = colored(char, 'yellow')
                 result[str(pos)] = 'yellow'
                 color = 'yellow'
                 answer = answer.replace(char, '0', 1)
@@ -93,7 +93,6 @@ class gameHandler(object):
                 self.populateLetterNotInWord(char, pos, 'yellow')
                 
             else: # Letter is incorrect
-                #result[pos]= char
                 result[str(pos)] = 'red'
                 color = 'red'
                 self.populateLetterNotInWord(char, pos, 'red')
@@ -106,13 +105,13 @@ class gameHandler(object):
         for pos, char in enumerate(resultDictionary['attempt_result']):
             if resultDictionary[str(pos)] == 'green':
                 color = 'green'
-                #print(f" {colored(char, 'green')} ")
+                
             elif resultDictionary[str(pos)] == 'yellow':
                 color = 'yellow'
-                #print(f" {colored(char, 'yellow')} ")
+                
             else:
                 color = 'white'
-                #print(f" {char} ")
+                
             result[pos] = colored(char, color)
         print(f"\n{''.join(result)}\n")
 
@@ -121,7 +120,6 @@ class gameHandler(object):
         for i in range(ALLOWED_ATTEMPTS):
             while True:
                 print(alphabet)
-                #attempt = input('Attempt #' + str(i + 1) + ': ').upper()
                 attempt = self.player.choose(i, self.letter_not_in_word)
                 if len(attempt) == WORD_LENGTH and attempt in self.word_bank: # Ensures user input is valid
                     break
@@ -133,7 +131,6 @@ class gameHandler(object):
                 alphabet, guess_result = self.validate(attempt, answer, alphabet)
                 #very important: update the knowledge of the player
                 self.player.update_knowledge(self.letter_not_in_word, self.letter_in_word)
-                #print(f"\n{''.join(guess_result)}\n")
                 self.printResult(guess_result)
         return False
     
