@@ -54,10 +54,9 @@ class SemiRandomPlayer(Player):
     
     #this function iterate on each letter of the knowledge so far and select 
     # all the words that match with the letter considered
-    # For example: knowledge = 'A _ _ I O' 
     def reduceWordBank(self, word_bank, letter_not_in_word, letter_in_word):
         reduced_word_bank = self.checkLettersNotInWord(word_bank, letter_not_in_word)
-        reduced_word_bank = self.checkLettersInWord(reduced_word_bank, letter_in_word)
+        #reduced_word_bank = self.checkLettersInWord(reduced_word_bank, letter_in_word)
 
         return reduced_word_bank
     

@@ -11,9 +11,14 @@ class gameHandler(object):
         self.letter_in_word = {}
 
     def populateLetterNotInWord(self, char, pos, color):
+        # bug sul rosso: se ha trovato una verde prima non segna non in parola sulle altre posizioni
         if color == 'red':
             if f'{char}' not in self.letter_not_in_word:
                 self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+            else:
+                #fixed
+                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+                self.letter_not_in_word[f'{char}'].remove(pos)
         if color == 'yellow':
             if f'{char}' not in self.letter_not_in_word:
                 self.letter_not_in_word[f'{char}']= []
@@ -23,6 +28,15 @@ class gameHandler(object):
         if color == 'green':
             if f'{char}' not in self.letter_not_in_word:
                 self.letter_not_in_word[f'{char}']= [] #create record in order to avoid the rewriting due to the red case
+            #now we should add the fact that EVERY OTHER letter is not in that position
+            for i in range(65, 91):
+                if f'{chr(i)}' != char:
+                    if f'{chr(i)}' not in self.letter_not_in_word:
+                        self.letter_not_in_word[f'{chr(i)}'] = []
+                    if pos not in self.letter_not_in_word[f'{chr(i)}']:
+                        self.letter_not_in_word[f'{chr(i)}'].append(pos)
+                    self.letter_not_in_word[f'{chr(i)}'].sort()
+
         
         # a green letter does not exclude the presence of another same green letter
         # the knowledge about that letter 'not in' a place must not be deleted
@@ -64,9 +78,9 @@ class gameHandler(object):
                 attempt_s[pos] = '0'
                 attempt = "".join(attempt_s)
 
-                self.populateLetterNotInWord(char, pos, 'green')
                 self.populateLetterInWord(char, pos)
-
+                self.populateLetterNotInWord(char, pos, 'green')
+                
                 current_alpha = current_alpha.replace(char, (colored(char, color))) 
         #then check for the yellow letters: correct letters, but in wrong positions
         #it must be done in two separate cycles otherwise some yellow can be displayed instead of some green
