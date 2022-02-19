@@ -19,6 +19,7 @@ class SemiRandomPlayer(Player):
             print('ERROR')
             quit
         attempt = random.choice(self.word_bank)
+        #attempt = input('Attempt #' + str(i + 1) + ': ').upper() #used for a test
         print(f"Attempt #{i+1}: {attempt}")
         time.sleep(3)
         return attempt

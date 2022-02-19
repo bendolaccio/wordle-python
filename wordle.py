@@ -11,11 +11,15 @@ class gameHandler(object):
         self.letter_in_word = {}
 
     def populateLetterNotInWord(self, char, pos, color):
-        # bug sul rosso: se ha trovato una verde prima non segna non in parola sulle altre posizioni
+        # bug sul rosso: se ha trovato una gialla e poi becca la seconda uguale rossa segna assente dappertutto
         if color == 'red':
-            self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-            #fixed
-            if f'{char}' in self.letter_in_word:
+            if f'{char}' not in self.letter_not_in_word: #if it's the first time flag everything (found a straight red)
+                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+            else: #else consider the letter as a yellow one and add only this particular position to the knowledge (found a red after a yellow)
+                self.letter_not_in_word[f'{char}'].append(pos)
+                self.letter_not_in_word[f'{char}'].sort()
+
+            if f'{char}' in self.letter_in_word and pos in self.letter_in_word[f'{char}']: #(foud a red after a green)
                 for pos in self.letter_in_word[f'{char}']:
                     self.letter_not_in_word[f'{char}'].remove(pos)
         if color == 'yellow':
@@ -146,7 +150,7 @@ class gameHandler(object):
 
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
-            #answer = 'OSMII' #used for debug with double
+            #answer = 'ONITA' #used for debug
             if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
                 break
