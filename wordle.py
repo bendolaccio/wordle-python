@@ -34,7 +34,8 @@ class gameHandler(object):
                     for position in self.letter_in_word[f'{char}']:
                         self.letter_not_in_word[f'{char}'].remove(position)
                 else:   #red after yellow
-                    self.letter_not_in_word[f'{char}']= []
+                    if f'{char}' not in self.letter_not_in_word:
+                        self.letter_not_in_word[f'{char}']= []
                     self.letter_not_in_word[f'{char}'].append(pos)
                     self.letter_not_in_word[f'{char}'].sort()
             else: #straight red
@@ -49,7 +50,7 @@ class gameHandler(object):
         if color == 'green':
             #now we should add the fact that EVERY OTHER letter is not in that position
             for i in range(65, 91):
-                if f'{chr(i)}' != char:
+                if f'{chr(i)}' != char: # only other letters
                     if f'{chr(i)}' not in self.letter_not_in_word:
                         self.letter_not_in_word[f'{chr(i)}'] = []
                     if pos not in self.letter_not_in_word[f'{chr(i)}']:
@@ -65,7 +66,8 @@ class gameHandler(object):
             if f'{char}' not in self.letter_in_word:
                 self.letter_in_word[f'{char}'] = []
         if color == 'green':
-            self.letter_in_word[f'{char}'] = []
+            if f'{char}' not in self.letter_in_word:
+                self.letter_in_word[f'{char}'] = []
             if pos not in self.letter_in_word[f'{char}']:    
                 self.letter_in_word[f'{char}'].append(pos)
         self.letter_in_word[f'{char}'].sort()
@@ -103,7 +105,7 @@ class gameHandler(object):
 
                 current_alpha = current_alpha.replace(char, (colored(char, color))) 
 
-                self.populateLetterInWord(char, pos, 'yellow')
+                self.populateLetterInWord(char, pos, 'green')
                 self.populateLetterNotInWord(char, pos, 'green')
         #then check for the yellow letters: correct letters, but in wrong positions
         #it must be done in two separate cycles otherwise some yellow can be displayed instead of some green
@@ -172,7 +174,7 @@ class gameHandler(object):
 
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
-            #answer = 'ERETI' #used for debug
+            #answer = 'SBAFA' #used for debug
             if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
                 break
