@@ -12,16 +12,34 @@ class gameHandler(object):
 
     def populateLetterNotInWord(self, char, pos, color):
         # bug sul rosso: se ha trovato una gialla e poi becca la seconda uguale rossa segna assente dappertutto
+        # bug sul rosso: ora non segna più tutti e 5 assenti nel caso becchi una rosso dopo un verde
+        '''
         if color == 'red':
             if f'{char}' not in self.letter_not_in_word: #if it's the first time flag everything (found a straight red)
                 self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-            else: #else consider the letter as a yellow one and add only this particular position to the knowledge (found a red after a yellow)
+            elif pos not in self.letter_not_in_word[f'{char}']: #else consider the letter as a yellow one and add only this particular position to the knowledge (found a red after a yellow)
                 self.letter_not_in_word[f'{char}'].append(pos)
                 self.letter_not_in_word[f'{char}'].sort()
 
             if f'{char}' in self.letter_in_word and pos in self.letter_in_word[f'{char}']: #(foud a red after a green)
+                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
                 for pos in self.letter_in_word[f'{char}']:
                     self.letter_not_in_word[f'{char}'].remove(pos)
+        '''
+        #refactor red
+        if color == 'red':
+            if f'{char}' in self.letter_in_word:
+                if len(self.letter_in_word[f'{char}'])!=0: #red after green
+                    self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+                    for position in self.letter_in_word[f'{char}']:
+                        self.letter_not_in_word[f'{char}'].remove(position)
+                else:   #red after yellow
+                    self.letter_not_in_word[f'{char}']= []
+                    self.letter_not_in_word[f'{char}'].append(pos)
+                    self.letter_not_in_word[f'{char}'].sort()
+            else: #straight red
+                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+
         if color == 'yellow':
             if f'{char}' not in self.letter_not_in_word:
                 self.letter_not_in_word[f'{char}']= []
@@ -42,11 +60,14 @@ class gameHandler(object):
         # a green letter does not exclude the presence of another same green letter
         # the knowledge about that letter 'not in' a place must not be deleted
     
-    def populateLetterInWord(self, char, pos):
-        if f'{char}' not in self.letter_in_word:
+    def populateLetterInWord(self, char, pos, color):
+        if color == 'yellow':
+            if f'{char}' not in self.letter_in_word:
+                self.letter_in_word[f'{char}'] = []
+        if color == 'green':
             self.letter_in_word[f'{char}'] = []
-        if pos not in self.letter_in_word[f'{char}']:    
-            self.letter_in_word[f'{char}'].append(pos)
+            if pos not in self.letter_in_word[f'{char}']:    
+                self.letter_in_word[f'{char}'].append(pos)
         self.letter_in_word[f'{char}'].sort()
 
     #input:
@@ -82,7 +103,7 @@ class gameHandler(object):
 
                 current_alpha = current_alpha.replace(char, (colored(char, color))) 
 
-                self.populateLetterInWord(char, pos)
+                self.populateLetterInWord(char, pos, 'yellow')
                 self.populateLetterNotInWord(char, pos, 'green')
         #then check for the yellow letters: correct letters, but in wrong positions
         #it must be done in two separate cycles otherwise some yellow can be displayed instead of some green
@@ -94,6 +115,7 @@ class gameHandler(object):
                 color = 'yellow'
                 answer = answer.replace(char, '0', 1)
                 answer_s = list(answer)
+                self.populateLetterInWord(char, pos, 'yellow')
                 self.populateLetterNotInWord(char, pos, 'yellow')
                 
             else: # Letter is incorrect
@@ -150,7 +172,7 @@ class gameHandler(object):
 
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
-            #answer = 'ONITA' #used for debug
+            #answer = 'ERETI' #used for debug
             if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
                 break
