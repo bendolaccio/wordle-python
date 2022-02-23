@@ -11,21 +11,6 @@ class gameHandler(object):
         self.letter_in_word = {}
 
     def populateLetterNotInWord(self, char, pos, color):
-        # bug sul rosso: se ha trovato una gialla e poi becca la seconda uguale rossa segna assente dappertutto
-        # bug sul rosso: ora non segna più tutti e 5 assenti nel caso becchi una rosso dopo un verde
-        '''
-        if color == 'red':
-            if f'{char}' not in self.letter_not_in_word: #if it's the first time flag everything (found a straight red)
-                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-            elif pos not in self.letter_not_in_word[f'{char}']: #else consider the letter as a yellow one and add only this particular position to the knowledge (found a red after a yellow)
-                self.letter_not_in_word[f'{char}'].append(pos)
-                self.letter_not_in_word[f'{char}'].sort()
-
-            if f'{char}' in self.letter_in_word and pos in self.letter_in_word[f'{char}']: #(foud a red after a green)
-                self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-                for pos in self.letter_in_word[f'{char}']:
-                    self.letter_not_in_word[f'{char}'].remove(pos)
-        '''
         #refactor red
         if color == 'red':
             if f'{char}' in self.letter_in_word:
@@ -86,7 +71,7 @@ class gameHandler(object):
         result = {
             "attempt_result" : attempt
         }
-        #result = list(attempt) 
+        
         answer_s = list(answer)
         attempt_s = list(attempt)
         #first check if there are letters in right position and replace them in order to not consider them twice
@@ -174,7 +159,6 @@ class gameHandler(object):
 
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
-            #answer = 'SBAFA' #used for debug
             if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
                 break

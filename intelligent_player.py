@@ -1,25 +1,13 @@
 from base import Player
-import random
-import time
 
-
-class SemiRandomPlayer(Player):
+class IntelligentPlayer(Player):
     def __init__(self, name, word_bank):
         self.name = name
         self.word_bank = word_bank
         self.letter_in_word = {}        # format: 'A' : [1,3,5]
         self.letter_not_in_word = {}    # format: 'A' : [1,3,5]
                                         #         'B' : [1,3,4,5]
-
-    def choose(self, i, letter_not_in_word):
-        print(f'Length of word_bank = {len(self.word_bank)}')
-        self.word_bank = self.reduceWordBank(self.word_bank, self.letter_not_in_word, self.letter_in_word)
-        print(f'Length of word_bank reduced = {len(self.word_bank)}')
-        attempt = random.choice(self.word_bank)
-        print(f"Attempt #{i+1}: {attempt}")
-        time.sleep(3)
-        return attempt
-
+    
     def __str__(self):
         return self.name
     
@@ -40,7 +28,15 @@ class SemiRandomPlayer(Player):
         newWordBank = word_bank
         if len(letter_in_word.keys())!=0:
             result = []
-            yellow_letters = [letter for letter in letter_in_word.keys() if len(letter_in_word[letter]) == 0] # extract yellow letter with position unknown
+            yellow_letters = []
+            for letter in letter_in_word.keys():
+                '''
+                if len(letter_in_word[letter]) == 0: # so if it's a yellow letter with position unknown
+                    temp = [word for word in word_bank if letter in word]
+                    result.extend([word for word in temp if word not in result]) # copy in result without duplicates
+                '''
+                if len(letter_in_word[letter]) == 0: # so if it's a yellow letter with position unknown
+                    yellow_letters.append(letter)
             if len(yellow_letters) != 0:
                 temp = [word for word in word_bank if all(x in word for x in yellow_letters)] #extracts words that contains ALL yellow letters at once. Not one or another
                 result.extend([word for word in temp if word not in result])
@@ -59,3 +55,17 @@ class SemiRandomPlayer(Player):
     def update_knowledge(self, letter_not_in_word, letter_in_word):
         self.letter_not_in_word = letter_not_in_word
         self.letter_in_word = letter_in_word
+    
+    def choose(self, i, letter_not_in_word):
+        print(f'Length of word_bank = {len(self.word_bank)}')
+        self.word_bank = self.reduceWordBank(self.word_bank, self.letter_not_in_word, self.letter_in_word)
+        print(f'Length of word_bank reduced = {len(self.word_bank)}')
+        #attempt = random.choice(self.word_bank)
+        attempt = input('Attempt #' + str(i + 1) + ': ').upper() #used for a test
+        print(f"Attempt #{i+1}: {attempt}")
+        
+        return attempt
+    
+    #the aim of this function is to return a statistic of how the letter are distributed in the form of pos : [ A : 2, B : 4, C : 9]
+    def generate_statistics(word_bank):
+        return {}
