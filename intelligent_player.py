@@ -66,6 +66,24 @@ class IntelligentPlayer(Player):
         
         return attempt
     
+    def get_average(self, count_let,tot):
+        return float(f"{count_let/tot:.2f}")
+    
     #the aim of this function is to return a statistic of how the letter are distributed in the form of pos : [ A : 2, B : 4, C : 9]
-    def generate_statistics(word_bank):
-        return {}
+    def words_pos_presence(self, word_bank, P="00000"):
+
+        Ld_word = [ dict() for x in range(len(P))]
+
+        # dictionary for counting letters
+        for word in word_bank:
+            for i in range(len(word)):
+                try :
+                    Ld_word[i][word[i]] += 1
+                except KeyError:
+                    Ld_word[i][word[i]] = 1
+
+        # dictionary with the %
+        Ld_word_average = [ {k:self.get_average(Ld_word[i][k],len(word_bank))  for k in Ld_word[i].keys()} for i in range(len(Ld_word))]
+
+
+        return Ld_word, Ld_word_average
