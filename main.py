@@ -1,5 +1,7 @@
+from intelligent_player import IntelligentPlayer
 from random_player import RandomPlayer
 from semirandom_player import SemiRandomPlayer
+from intelligent_player import IntelligentPlayer
 from wordle import gameHandler
 from human_player import HumanPlayer
 from random_player import RandomPlayer
@@ -13,7 +15,7 @@ while True:
     f.close
     word_bank = [x.upper() for x in parole.split()]
 
-    gh = gameHandler(word_bank, SemiRandomPlayer("Luca", word_bank))
+    gh = gameHandler(word_bank, IntelligentPlayer("Luca", word_bank))
     gh.play()
 
     if input('\nWant to play again with a new word? Type anything to keep playing, or type [q]uit to quit. ').upper().startswith('Q'):
