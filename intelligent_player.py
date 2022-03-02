@@ -67,11 +67,11 @@ class IntelligentPlayer(Player):
 
         D_word_average = self.word_average(self.word_bank, Ld_word_average)
 
-        self.print_prob_word(D_word_average,20) #31 parole massime stampate in output
+        n = 20
+        attempt = self.print_prob_word(D_word_average, n) #n parole massime stampate in output
 
-        self.print_prob_pos_letter(Ld_word_average,True,5) #5 lettere massime stampate in output, True , senso decrescente
+        self.print_prob_pos_letter(Ld_word_average, True, 5) #5 lettere massime stampate in output, True , senso decrescente
 
-        attempt = random.choice(self.word_bank)
         #attempt = input('Attempt #' + str(i + 1) + ': ').upper() #used for a test
         print(f"Attempt #{i+1}: {attempt}")
         time.sleep(3)
@@ -121,10 +121,6 @@ class IntelligentPlayer(Player):
 
         return L_word,L_average
 
-    def print_dictionaries(self, Ld_word, Ld_word_average):
-        print(f'First position counter: {Ld_word[0]}')
-        print(f'First position %: {Ld_word_average[0]}')
-
     
     #restituisce un dizionario con le parole nel set e la probabilità
     def word_average(self, set_parole, Ld_word_average):
@@ -145,6 +141,7 @@ class IntelligentPlayer(Player):
             print(f"-{i+1} : {L_word[i]}  --->  {L_average[i]*100}%")
         print("-*"*35)
 
+        return L_word[0]
 
     #input lista di dizionari con un dizionario per posizione e la lettera con percentuale di presenza
     #head serve per scegleire quanti elementi stampare massimo
