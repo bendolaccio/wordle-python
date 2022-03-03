@@ -7,6 +7,7 @@ class gameHandler(object):
     def __init__(self, word_bank, player):
         self.player = player
         self.word_bank = word_bank
+        self.attempt = 0
         self.letter_not_in_word = {}
         self.letter_in_word = {}
 
@@ -139,12 +140,14 @@ class gameHandler(object):
                 else:
                     print(colored('\nNot in word bank.', 'red'))
             if attempt == answer: # Checks if user won
+                self.attempt = i
                 return True
             else:
                 alphabet, guess_result = self.validate(attempt, answer, alphabet)
                 #very important: update the knowledge of the player
                 self.player.update_knowledge(self.letter_not_in_word, self.letter_in_word)
                 self.printResult(guess_result)
+        self.attempt = i+1
         return False
     
         
@@ -159,9 +162,11 @@ class gameHandler(object):
 
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
+            #answer = 'IROSI' #used for debug
             if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
                 break
             else:
                 print('\nYou lost! The word was ' + colored(answer, 'green') + '\n')
                 break
+        return self.attempt

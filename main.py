@@ -8,7 +8,11 @@ from random_player import RandomPlayer
 from settings import FILENAME
 
 #test
-while True:
+
+attempt_list = []
+
+#while True:
+for i in range(100):
     fileName = FILENAME
     f = open(fileName)
     parole = f.read()
@@ -16,8 +20,11 @@ while True:
     word_bank = [x.upper() for x in parole.split()]
 
     gh = gameHandler(word_bank, IntelligentPlayer("Luca", word_bank))
-    gh.play()
-
+    attempt = gh.play()
+    attempt_list.append(attempt)
+    '''
     if input('\nWant to play again with a new word? Type anything to keep playing, or type [q]uit to quit. ').upper().startswith('Q'):
         print('\nThanks for playing.\n')
         exit()
+    '''
+    print(f'The run has concluded with a score of {sum(attempt_list)/len(attempt_list)}')

@@ -30,15 +30,7 @@ class IntelligentPlayer(Player):
         newWordBank = word_bank
         if len(letter_in_word.keys())!=0:
             result = []
-            yellow_letters = []
-            for letter in letter_in_word.keys():
-                '''
-                if len(letter_in_word[letter]) == 0: # so if it's a yellow letter with position unknown
-                    temp = [word for word in word_bank if letter in word]
-                    result.extend([word for word in temp if word not in result]) # copy in result without duplicates
-                '''
-                if len(letter_in_word[letter]) == 0: # so if it's a yellow letter with position unknown
-                    yellow_letters.append(letter)
+            yellow_letters = [letter for letter in letter_in_word.keys()if len(letter_in_word[letter]) == 0]
             if len(yellow_letters) != 0:
                 temp = [word for word in word_bank if all(x in word for x in yellow_letters)] #extracts words that contains ALL yellow letters at once. Not one or another
                 result.extend([word for word in temp if word not in result])
@@ -74,7 +66,7 @@ class IntelligentPlayer(Player):
 
         #attempt = input('Attempt #' + str(i + 1) + ': ').upper() #used for a test
         print(f"Attempt #{i+1}: {attempt}")
-        time.sleep(3)
+        #time.sleep(3)
         
         return attempt
     
