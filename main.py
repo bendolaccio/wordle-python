@@ -27,4 +27,4 @@ for i in range(NUMBER_OF_MATCHES):
         print('\nThanks for playing.\n')
         exit()
     '''
-print(f'The run has concluded with a score of {sum(attempt_list)/len(attempt_list)}')
+print(f'The run has concluded with a score of {sum(attempt_list)/len(attempt_list):.4f}')

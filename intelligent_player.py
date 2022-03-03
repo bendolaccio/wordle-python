@@ -130,7 +130,7 @@ class IntelligentPlayer(Player):
         print(f"Totale Parole rimaste: {len(Ld_word_average_pure)} :")
         print("__"*35)
         for i in range(len(L_word)):
-            print(f"-{i+1} : {L_word[i]}  --->  {L_average[i]*100}%")
+            print(f"-{i+1} : {L_word[i]}  --->  {L_average[i]*100:.2f}%")
         print("-*"*35)
 
         return L_word[0]
@@ -164,6 +164,6 @@ class IntelligentPlayer(Player):
             L_let,L_aver = self.ordered_list_key_value_reversed(Ld_word[i],Ld_word_pure[i],True,head)
 
             for x in range(len(L_let)):
-                print(f"-{x+1} : {L_let[x].upper()}  --->  {L_aver[x]*100}%")
+                print(f"-{x+1} : {L_let[x].upper()}  --->  {L_aver[x]*100:.2f}%")
             print("__"*35)
         print("-*"*35)
