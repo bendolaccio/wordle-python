@@ -15,8 +15,8 @@ class SemiRandomPlayer(Player):
         print(f'Length of word_bank = {len(self.word_bank)}')
         self.word_bank = self.reduceWordBank(self.word_bank, self.letter_not_in_word, self.letter_in_word)
         print(f'Length of word_bank reduced = {len(self.word_bank)}')
-        #attempt = random.choice(self.word_bank)
-        attempt = input('Attempt #' + str(i + 1) + ': ').upper()
+        attempt = random.choice(self.word_bank)
+        #attempt = input('Attempt #' + str(i + 1) + ': ').upper()
         print(f"Attempt #{i+1}: {attempt}")
         time.sleep(3)
         return attempt
