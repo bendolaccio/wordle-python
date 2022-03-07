@@ -19,8 +19,8 @@ for i in range(NUMBER_OF_MATCHES):
     f.close
     word_bank = [x.upper() for x in parole.split()]
 
-    gh = gameHandler(word_bank, SemiRandomPlayer("Luca", word_bank))
-    attempt = gh.play()
+    gh = gameHandler(word_bank, IntelligentPlayer("Luca", word_bank))
+    attempt = gh.play() + 1
     attempt_list.append(attempt)
     '''
     if input('\nWant to play again with a new word? Type anything to keep playing, or type [q]uit to quit. ').upper().startswith('Q'):

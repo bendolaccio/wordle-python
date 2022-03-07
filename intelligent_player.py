@@ -1,6 +1,6 @@
 from base import Player
-import random
-import time
+from settings import NUMBER_OF_WORDS
+
 
 class IntelligentPlayer(Player):
     def __init__(self, name, word_bank):
@@ -61,8 +61,7 @@ class IntelligentPlayer(Player):
 
         self.print_prob_pos_letter(Ld_word_average, True, 5) # 5 letters max in output. If True then desc order
 
-        n = 10
-        attempt = self.print_prob_word(D_word_average, n) # n words max in output
+        attempt = self.print_prob_word(D_word_average, NUMBER_OF_WORDS) # n words max in output
 
 
         #attempt = input('Attempt #' + str(i + 1) + ': ').upper() #used for a test
