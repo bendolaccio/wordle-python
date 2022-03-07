@@ -40,6 +40,7 @@ Example:
 ![image](https://user-images.githubusercontent.com/10921226/157059511-de30beb5-a2b4-46d9-841d-ab6a3f8690d0.png)
 
 The word choosen is ORARI (that has 3 green letters):
+
 ![image](https://user-images.githubusercontent.com/10921226/157059618-8876d543-08f0-45b1-949c-f2f858322ff6.png)
 
 
