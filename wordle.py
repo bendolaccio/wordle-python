@@ -15,10 +15,16 @@ class gameHandler(object):
         #refactor red
         if color == 'red':
             if f'{char}' in self.letter_in_word:
-                if len(self.letter_in_word[f'{char}'])!=0: #red after green
-                    self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
-                    for position in self.letter_in_word[f'{char}']:
-                        self.letter_not_in_word[f'{char}'].remove(position)
+                if len(self.letter_in_word[f'{char}'])!=0: #red after green BUG HERE IF 0Y0RG (REINI word to guess, RISII word guessed)
+                    if f'{char}' not in self.letter_not_in_word:
+                        self.letter_not_in_word[f'{char}']= []
+                    if len(self.letter_in_word[f'{char}']) <= len(self.letter_not_in_word[f'{char}']): # red after green and yellow
+                        self.letter_not_in_word[f'{char}'].append(pos)
+                        self.letter_not_in_word[f'{char}'].sort()
+                    else: #red only after green, not yellow
+                        self.letter_not_in_word[f'{char}'] = [0, 1, 2, 3, 4]
+                        for position in self.letter_in_word[f'{char}']:
+                            self.letter_not_in_word[f'{char}'].remove(position)
                 else:   #red after yellow
                     if f'{char}' not in self.letter_not_in_word:
                         self.letter_not_in_word[f'{char}']= []
@@ -162,7 +168,7 @@ class gameHandler(object):
 
         while True:
             answer = random.choice(self.word_bank) # Picks a word for this turn
-            #answer = 'IROSI' #used for debug
+            #answer = 'CIOFI' #used for debug
             if self.guess(answer, alphabet):
                 print(colored('\nCongratulations! You won!\n', 'green', attrs=['bold']))
                 break

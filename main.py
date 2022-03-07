@@ -19,7 +19,7 @@ for i in range(NUMBER_OF_MATCHES):
     f.close
     word_bank = [x.upper() for x in parole.split()]
 
-    gh = gameHandler(word_bank, IntelligentPlayer("Luca", word_bank))
+    gh = gameHandler(word_bank, SemiRandomPlayer("Luca", word_bank))
     attempt = gh.play()
     attempt_list.append(attempt)
     '''
@@ -27,4 +27,4 @@ for i in range(NUMBER_OF_MATCHES):
         print('\nThanks for playing.\n')
         exit()
     '''
-print(f'The run has concluded with a score of {sum(attempt_list)/len(attempt_list):.4f}')
+print(f'The run has concluded with a score of {float(sum(attempt_list)/len(attempt_list)):.4f}')

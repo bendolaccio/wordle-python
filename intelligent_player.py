@@ -59,10 +59,11 @@ class IntelligentPlayer(Player):
 
         D_word_average = self.word_average(self.word_bank, Ld_word_average)
 
-        n = 20
-        attempt = self.print_prob_word(D_word_average, n) #n parole massime stampate in output
+        self.print_prob_pos_letter(Ld_word_average, True, 5) # 5 letters max in output. If True then desc order
 
-        self.print_prob_pos_letter(Ld_word_average, True, 5) #5 lettere massime stampate in output, True , senso decrescente
+        n = 10
+        attempt = self.print_prob_word(D_word_average, n) # n words max in output
+
 
         #attempt = input('Attempt #' + str(i + 1) + ': ').upper() #used for a test
         print(f"Attempt #{i+1}: {attempt}")
@@ -71,7 +72,7 @@ class IntelligentPlayer(Player):
         return attempt
     
     def get_average(self, count_let,tot):
-        return float(f"{count_let/tot:.2f}")
+        return float(f"{count_let/tot:.4f}")
 
     # revert a dictionary by exchanging keys and values
     def dictInv(self, D):
@@ -115,10 +116,11 @@ class IntelligentPlayer(Player):
 
     
     #restituisce un dizionario con le parole nel set e la probabilità
+    #returns a dictionary with words in the set and their probabilities
     def word_average(self, set_parole, Ld_word_average):
         return {k:self.get_average(sum([Ld_word_average[i][k[i]] for i in range(len(k))]),len(k)) for k in set_parole}
 
-    #funzione di stampa delle parole probabili
+    # print function of probabilities
     def print_prob_word(self, Ld_word_average_pure,head=10):
 
         Ld_word_average = self.dictInv(Ld_word_average_pure)

@@ -18,7 +18,7 @@ class SemiRandomPlayer(Player):
         attempt = random.choice(self.word_bank)
         #attempt = input('Attempt #' + str(i + 1) + ': ').upper()
         print(f"Attempt #{i+1}: {attempt}")
-        time.sleep(3)
+        #time.sleep(3)
         return attempt
 
     def __str__(self):
