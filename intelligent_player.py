@@ -1,5 +1,5 @@
 from base import Player
-from settings import NUMBER_OF_WORDS
+from settings import NUMBER_OF_WORDS, PENALIZE_REPETITION
 
 
 class IntelligentPlayer(Player):
@@ -98,26 +98,42 @@ class IntelligentPlayer(Player):
     
     # returns two lists ordered by increasing value and by length equal to head
     def ordered_list_key_value_reversed(self, Ld_word_average,Ld_word_average_pure,reverse = True, head=10):
-        L_average = [k for k in Ld_word_average.keys()]
+        L_average = [k for k in Ld_word_average.keys()] #extract all perc of single letters in a list
 
-        L_average.sort(reverse=reverse)
+        L_average.sort(reverse=reverse) #order the list
 
         L_word = []
 
-        for perc in L_average:
-            L_word += Ld_word_average[perc]
-
+        for perc in L_average:                  #for every perc (now sorted) get the right letter and create a list ordered
+            L_word += Ld_word_average[perc]     
+                                                
         L_word = L_word[:head]
 
         L_average = [Ld_word_average_pure[k] for k in L_word]
 
         return L_word,L_average
 
+    # this function penalizes words with letter repeated
+    def penalize_repetition(self, Ld_word_average_pure):
+        for word in Ld_word_average_pure.keys():
+            d = {}
+            flag_repetition = False
+            for letter in word:
+                try:
+                    d[letter] += 1
+                    flag_repetition = True
+                except KeyError:
+                    d[letter] = 1
+            if flag_repetition:
+                Ld_word_average_pure[word] -= PENALIZE_REPETITION
+        return Ld_word_average_pure
+
     
-    #restituisce un dizionario con le parole nel set e la probabilità
     #returns a dictionary with words in the set and their probabilities
-    def word_average(self, set_parole, Ld_word_average):
-        return {k:self.get_average(sum([Ld_word_average[i][k[i]] for i in range(len(k))]),len(k)) for k in set_parole}
+    def word_average(self, word_bank, Ld_word_average):
+        Ld_word_average_pure = {k:self.get_average(sum([Ld_word_average[i][k[i]] for i in range(len(k))]),len(k)) for k in word_bank}
+        Ld_word_average_pure = self.penalize_repetition(Ld_word_average_pure)
+        return Ld_word_average_pure
 
     # print function of probabilities
     def print_prob_word(self, Ld_word_average_pure,head=10):
