@@ -4,9 +4,9 @@
 ALLOWED_ATTEMPTS = 6
 WORD_LENGTH = 5
 FILENAME = 'PAROLE.txt'
-NUMBER_OF_MATCHES = 10
+NUMBER_OF_MATCHES = 1
 ###############################
 # intelligent player settings #
 ###############################
 NUMBER_OF_WORDS = 10
-PENALIZE_REPETITION = 0.05
+PENALIZE_REPETITION = 0.0475
