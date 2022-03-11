@@ -47,8 +47,7 @@ The word choosen is ORARI (that has 3 green letters):
 ## Results
 
 The semirandom player scores 4,830 on a 1000 games run with the italian file.
-The intelligent player now scores 4,325 on a 1000 games run with the italian file (no testing with penalized repetition for now).
-Intelligent player with penalized repetition scores 4,280 on a 100 games run with the italian file.
+The intelligent player now scores 4,279 on a 1000 games run with the italian file.
 
 ## Contributing
 
