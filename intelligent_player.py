@@ -116,16 +116,18 @@ class IntelligentPlayer(Player):
     # this function penalizes words with letter repeated
     def penalize_repetition(self, Ld_word_average_pure):
         for word in Ld_word_average_pure.keys():
+            repetition = 0
             d = {}
             flag_repetition = False
             for letter in word:
                 try:
                     d[letter] += 1
+                    repetition += 1
                     flag_repetition = True
                 except KeyError:
                     d[letter] = 1
             if flag_repetition:
-                Ld_word_average_pure[word] -= PENALIZE_REPETITION
+                Ld_word_average_pure[word] -= PENALIZE_REPETITION * repetition
         return Ld_word_average_pure
 
     
